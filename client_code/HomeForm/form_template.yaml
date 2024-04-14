@@ -1,0 +1,94 @@
+container:
+  type: HtmlTemplate
+  properties: {html: '@theme:standard-page.html'}
+components:
+- type: ColumnPanel
+  properties: {col_widths: '{}'}
+  name: content_panel
+  layout_properties: {slot: default}
+  components:
+  - type: ColumnPanel
+    properties: {role: card, col_widths: '{}'}
+    name: card_1
+    layout_properties: {grid_position: 'OGJZJD,CMXRPA'}
+    components:
+    - type: Label
+      properties: {role: headline, align: left, tooltip: '', border: '', foreground: '',
+        visible: true, text: Feedback Form, font_size: null, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+        underline: false, icon: ''}
+      name: label_1
+      layout_properties: {grid_position: 'IEVAXK,QCCFZP'}
+    - type: Label
+      properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+        visible: true, text: 'Name:', font_size: null, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        underline: false, icon: ''}
+      name: label_2
+      layout_properties: {grid_position: 'ROOKHV,WBMCVD'}
+    - type: TextBox
+      properties: {}
+      name: name_box
+      layout_properties: {grid_position: 'ROOKHV,CPYUWC'}
+    - type: Label
+      properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+        visible: true, text: 'Email:', font_size: null, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        underline: false, icon: ''}
+      name: label_3
+      layout_properties: {grid_position: 'ICXUVK,HQIARV'}
+    - type: TextBox
+      properties: {}
+      name: email_box
+      layout_properties: {grid_position: 'ICXUVK,WWAASA'}
+    - type: Label
+      properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+        visible: true, text: 'Feedback:', font_size: null, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        underline: false, icon: ''}
+      name: label_4
+      layout_properties: {grid_position: 'MBANSN,DSAPWS'}
+    - type: TextArea
+      properties: {}
+      name: feedback_box
+      layout_properties: {grid_position: 'VBRMEF,GFZMQR'}
+    - type: Button
+      properties: {role: primary-color, align: center, tooltip: '', border: '', enabled: true,
+        foreground: '', visible: true, text: Submit, font_size: null, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        underline: false, icon: ''}
+      name: submit_button
+      layout_properties: {grid_position: 'MHBKKL,GWGQWM'}
+      event_bindings: {click: submit_button_click}
+  - type: RichText
+    properties: {role: sample-app-info, align: left, tooltip: '', enable_slots: true,
+      border: '', foreground: '', visible: true, font_size: null, content: '#### Hi
+        there!
+
+
+        This is Anvil''s **drag-and-drop designer**. Click on a component to select
+        it and edit its properties, or drag and drop a new component from the toolbox.
+
+
+        **This app is ready to run!** If you enter some feedback and click "submit",
+        you''ll receive an email. To try it out, click ![Run](_/theme/run-button.png)
+        up at the top.
+
+
+        To see the **Python code** for this form, double-click the `SUBMIT` button,
+        or select ![code](_/theme/code-button.png) in the toolbar above.
+
+
+        Want more help? Check out the tutorials on the Anvil website!', font: '',
+      spacing_above: small, spacing_below: small, data: null, background: '', format: markdown}
+    name: sample_app_description
+    layout_properties: {grid_position: 'CUSAQI,LVACLQ'}
+- type: FlowPanel
+  properties: {}
+  name: navbar_links
+  layout_properties: {slot: nav-right}
+- name: title_lbl
+  properties: {text: Feedback}
+  type: Label
+  layout_properties: {slot: title}
+is_package: true
