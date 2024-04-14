@@ -1,50 +1,70 @@
-from ._anvil_designer import HomeFormTemplate
-from anvil import *
-import anvil.server
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
+import tkinter as tk
+from tkinter import scrolledtext, messagebox, ttk, Menu
+import re
 
-#
-# This is the Python code that makes this feedback form work.
-# It's a Python class, with a method that runs when the user
-# clicks the SUBMIT button.
-#
-# When the button is clicked, we send the contents of the
-# text boxes to our Server Module. The Server Module records
-# the feedback in the database, and sends an email to the
-# app's owner (that's you!).
-#
-# To find the Server Module, look under "Server Code" on the
-# left.
-#
+# Custom highlighter for Python syntax
+class PythonHighlighter:
+    def __init__(self, text_widget):
+        self.text_widget = text_widget
+        self.setup_highlighting()
 
-class HomeForm(HomeFormTemplate):
+    def setup_highlighting(self):
+        # Keywords for syntax highlighting
+        keywords = ["def", "if", "else", "elif", "for", "while", "return", "import", "class", "break", "continue"]
+        self.regex = re.compile(r"\b(" + "|".join(keywords) + r")\b")
+        self.text_widget.tag_configure("keyword", foreground="#f1c40f", font=('Helvetica', 14, 'bold'))
 
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
-    self.init_components(**properties)
+    def highlight(self):
+        text = self.text_widget.get("1.0", 'end-1c')
+        for tag in self.text_widget.tag_names():
+            self.text_widget.tag_remove(tag, "1.0", 'end')
+        for match in self.regex.finditer(text):
+            self.text_widget.tag_add("keyword", f"1.0+{match.start()}c", f"1.0+{match.end()}c")
 
-    # Any code you write here will run when the form opens.
+# Main window class
+class MainWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("AI Interaction Platform")
+        self.geometry("1200x800")
+        self.create_widgets()
 
-  def submit_button_click(self, **event_args):
-    # This method runs when the button is clicked.
-    # First, we grab the contents of the text boxes:
-    name = self.name_box.text
-    email = self.email_box.text
-    feedback = self.feedback_box.text
+    def create_widgets(self):
+        # Create a PanedWindow for resizable panels
+        pwindow = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+        pwindow.pack(fill=tk.BOTH, expand=True)
 
-    # Now we call our Server Module to save our input
-    # in the database and send you an email:
-    anvil.server.call('add_feedback', name, email, feedback)
-    # (Hint: Find ServerModule1 under "Server Code" on the
-    # left. Click on the folder icon if you can't see it.)
+        # Left panel: AI Thinking Windows
+        left_panel = ttk.Frame(pwindow, width=400)
+        pwindow.add(left_panel, weight=1)
 
-    # Display something to the user so they know it worked:
-    Notification("Feedback submitted!").show()
-    self.clear_inputs()
+        self.thinking_windows = {}
+        apis = ["Google Gemini", "OpenAI", "Claude AI", "Groq"]
+        colors = {"Google Gemini": "#3498db", "OpenAI": "#2ecc71", "Claude AI": "#e74c3c", "Groq": "#9b59b6"}
 
-  def clear_inputs(self):
-    self.name_box.text = ""
-    self.email_box.text = ""
-    self.feedback_box.text = ""
+        for api in apis:
+            ttk.Label(left_panel, text=f"{api} Thinking:", font=('Helvetica', 16, 'bold')).pack(pady=10, padx=10, anchor='w')
+            text_area = scrolledtext.ScrolledText(left_panel, wrap=tk.WORD, bg=colors[api], fg='white', font=('Helvetica', 14), height=4)
+            text_area.pack(padx=20, pady=10, fill=tk.X)
+            self.thinking_windows[api] = text_area
+
+        # Right panel: User Code Area
+        right_panel = ttk.Frame(pwindow, width=800)
+        pwindow.add(right_panel, weight=3)
+
+        ttk.Label(right_panel, text="Your Code:", font=('Helvetica', 16, 'bold')).pack(pady=10, padx=10, anchor='w')
+        self.user_code = scrolledtext.ScrolledText(right_panel, wrap=tk.WORD, bg="#1e1e1e", fg="#ffffff", font=('Helvetica', 14))
+        self.user_code.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
+        self.highlighter = PythonHighlighter(self.user_code)
+        self.user_code.bind("<KeyRelease>", lambda e: self.highlighter.highlight())
+
+        run_button = ttk.Button(right_panel, text="Run Code", command=self.run_code)
+        run_button.pack(pady=10)
+
+    def run_code(self):
+        # Placeholder function to simulate code execution
+        messagebox.showinfo("Run Code", "Executing the user's code...")
+
+if __name__ == "__main__":
+    app = MainWindow()
+    app.mainloop()
