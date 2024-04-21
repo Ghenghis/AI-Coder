@@ -34,8 +34,11 @@ cta: {preset: feedback_form_welcome}
 package_name: Feedback_Form_1
 allow_embedding: false
 name: Feedback Form 1
-runtime_options: {version: 2, server_version: python3-sandbox, client_version: '3',
-  server_spec: null}
+runtime_options:
+  version: 2
+  server_version: python3-sandbox
+  client_version: '3'
+  server_spec: {base: python310-minimal}
 metadata: {}
 startup_form: HomeForm
 db_schema:
